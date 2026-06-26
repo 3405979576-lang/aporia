@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aporia · 温柔思维教练</title>
+  <style>
+    :root{
+      --cream:#fff8ec;
+      --cream-2:#f8ecd9;
+      --cream-3:#f2dfc5;
+      --paper:#fffdf7;
+      --coffee:#5b3f2e;
+      --coffee-2:#7a5941;
+      --coffee-3:#9a7657;
+      --caramel:#c99355;
+      --rose:#d99b8f;
+      --sage:#9cad8f;
+      --line:rgba(91,63,46,.18);
+      --shadow:0 20px 60px rgba(91,63,46,.12);
+      --radius:28px;
+      --radius-sm:18px;
+      --ease:.28s cubic-bezier(.2,.8,.2,1);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{
+      min-height:100vh;
+      color:var(--coffee);
+      background:
+        radial-gradient(circle at 10% 0%, rgba(217,155,143,.20), transparent 28%),
+        radial-gradient(circle at 86% 6%, rgba(201,147,85,.18), transparent 26%),
+        linear-gradient(180deg,var(--cream),var(--cream-2));
+      font-family:"Comic Sans MS","LXGW WenKai","Kaiti SC","STKaiti","PingFang SC",cursive,sans-serif;
+      line-height:1.8;
+      overflow-x:hidden;
+    }
+    body:before{
+      content:"";position:fixed;inset:0;pointer-events:none;opacity:.28;
+      background-image:linear-gradient(rgba(91,63,46,.08) 1px, transparent 1px);
+      background-size:100% 34px;
+    }
+    button,textarea{font:inherit}
+    button{cursor:pointer}
+    .app{position:relative;z-index:1;max-width:880px;margin:0 auto;padding:24px 20px 80px}
+    .narrow{max-width:720px;margin:0 auto}
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+    .brand{display:flex;gap:10px;align-items:center;font-weight:900;letter-spacing:.02em}
+    .logo{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#f5cfa4,#d99b8f);box-shadow:0 8px 24px rgba(201,147,85,.22);position:relative}
+    .logo:after{content:"";position:absolute;inset:10px;border:2px solid rgba(91,63,46,.28);border-radius:50%}
+    .btn{border:1px solid var(--line);background:rgba(255,253,247,.62);color:var(--coffee);border-radius:999px;padding:11px 18px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:var(--ease);box-shadow:0 8px 24px rgba(91,63,46,.06)}
+    .btn:hover{transform:translateY(-1px);background:#fffaf0;box-shadow:0 12px 30px rgba(91,63,46,.12)}
+    .btn.primary{background:linear-gradient(135deg,#8a6042,#c99355);color:#fffaf0;border:none}
+    .btn.small{padding:7px 12px;font-size:.86rem}
+    .btn.ghost{background:transparent;box-shadow:none}
+    .btn:disabled{opacity:.48;cursor:not-allowed;transform:none}
+    .hero{text-align:center;padding:72px 0 36px}
+    .kicker{display:inline-flex;border:1px solid var(--line);background:rgba(255,253,247,.62);border-radius:999px;padding:6px 14px;font-size:.86rem;margin-bottom:18px;color:var(--coffee-2)}
+    .title{font-size:clamp(2.2rem,8vw,4.8rem);line-height:1.05;font-weight:900;letter-spacing:-.04em;color:var(--coffee)}
+    .title em{font-style:normal;color:var(--caramel)}
+    .subtitle{max-width:650px;margin:22px auto 32px;color:var(--coffee-2);font-size:1.08rem}
+    .hero-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+    .features{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:46px}
+    .feature,.card{background:rgba(255,253,247,.72);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);backdrop-filter:blur(10px)}
+    .feature{padding:18px;text-align:left}.feature b{display:block;margin-bottom:4px}.feature p{font-size:.92rem;color:var(--coffee-2)}
+    .card{padding:22px}
+    .layer-badge{display:inline-flex;border:1px solid var(--line);background:rgba(255,253,247,.72);border-radius:999px;padding:6px 13px;font-size:.82rem;color:var(--coffee-2);font-weight:900}
+    .progress{height:9px;background:rgba(91,63,46,.12);border-radius:999px;overflow:hidden;margin:13px 0 8px}.progress span{display:block;height:100%;background:linear-gradient(90deg,#d99b8f,#c99355,#9cad8f);border-radius:999px;transition:.45s}
+    .crumbs{display:flex;justify-content:space-between;color:rgba(91,63,46,.55);font-size:.75rem;gap:4px;overflow:hidden}.crumbs span.active{color:var(--coffee);font-weight:900}
+    .chat{display:flex;flex-direction:column;gap:16px;margin:20px 0}.bubble{max-width:88%;padding:16px 18px;border-radius:24px;animation:up .35s ease;white-space:normal}.bubble.ai{align-self:flex-start;background:rgba(255,253,247,.82);border:1px solid var(--line);border-bottom-left-radius:8px}.bubble.user{align-self:flex-end;background:#ead7bd;border:1px solid rgba(91,63,46,.12);border-bottom-right-radius:8px;color:#4d3324}.bubble .hint{display:block;margin-top:10px;color:var(--coffee-3);font-size:.9rem}
+    .input-card{position:sticky;bottom:14px;background:rgba(255,248,236,.78);border:1px solid var(--line);border-radius:26px;padding:10px;display:flex;gap:10px;align-items:flex-end;box-shadow:0 14px 46px rgba(91,63,46,.12);backdrop-filter:blur(14px)}
+    textarea{flex:1;min-height:58px;max-height:160px;resize:none;border:0;outline:0;background:rgba(255,253,247,.75);border-radius:20px;padding:13px 14px;color:var(--coffee);font-size:1rem}
+    textarea::placeholder{color:rgba(91,63,46,.45)}
+    .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.chip{border:1px dashed rgba(91,63,46,.24);border-radius:999px;padding:6px 10px;color:var(--coffee-2);background:rgba(255,253,247,.52);font-size:.86rem}
+    .report-section{padding:18px;border:1px solid var(--line);border-radius:22px;background:rgba(255,253,247,.62);margin:14px 0}.report-section h3{font-size:1.08rem;margin-bottom:8px}.report-section p{color:var(--coffee-2)}
+    .soft-note{padding:16px;border-radius:22px;background:rgba(217,155,143,.14);border:1px solid rgba(217,155,143,.26);margin-top:14px}
+    .history-item{padding:16px;margin-bottom:12px;cursor:pointer}.fade{animation:up .35s ease}@keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+    @media(max-width:720px){.app{padding:16px 13px 70px}.features{grid-template-columns:1fr}.bubble{max-width:94%}.topbar{align-items:flex-start}.crumbs{font-size:.65rem}.card{padding:17px}.input-card{bottom:8px}}
+    @media print{body{background:#fff;color:#3f2a1f}.no-print{display:none}.card,.report-section{box-shadow:none;background:#fff;border-color:#ddd}.app{max-width:100%;padding:0}}
+  </style>
+</head>
+<body>
+  <div class="app" id="app"></div>
+  <script>
+  (()=>{
+    const $=s=>document.querySelector(s);
+    const KEY='aporia_warm_current', HIST='aporia_warm_history';
+    const layers=['landing','checkin','story','feeling','belief','need','choice','plan','report'];
+    const names={checkin:'情绪落点',story:'故事梳理',feeling:'真实感受',belief:'想法松动',need:'需求看见',choice:'温柔决策',plan:'小步行动',report:'最终小纸条'};
+    const state={screen:'landing',sessionId:'',messages:[],step:'checkin',sub:0,data:{},history:[],loading:false};
+    const prompts={
+      start:'先不用急着讲清楚全部。你可以只写：此刻最困扰你的那件事是什么？',
+      checkin:[
+        '在继续分析之前，我想先接住你一下。\n\n如果用天气来形容你现在的状态，它更像什么？阴天、暴雨、起雾、闷热，还是别的？',
+        '这个问题现在压在你身上的重量，大概是 1 到 10 里的几分？不用精确，凭感觉就好。'
+      ],
+      story:[
+        '我们先不评判它。\n\n请像讲故事一样说说：这件事是从什么时候开始变得让你不舒服的？',
+        '在这个故事里，最反复出现的一个场景是什么？也就是你一想到它，就会被卡住的那一幕。'
+      ],
+      feeling:[
+        '如果把“应该怎么办”先放到旁边，你真正的感受是什么？\n\n可以是委屈、害怕、生气、羞耻、空白、累，也可以是很复杂。',
+        '这个感受最想保护你的是什么？例如：不被否定、不失控、不受伤、不后悔、不丢脸。'
+      ],
+      belief:[
+        '现在我们轻轻看一眼你脑子里的那句话。\n\n当你想到这个问题时，心里最自动冒出来的一句判断是什么？',
+        '这句话有没有可能只是“当下的你为了自保产生的解释”，而不是全部事实？如果要把它改得温柔一点，可以怎么说？'
+      ],
+      need:[
+        '你真正需要的，也许不只是一个方案。\n\n如果这个问题背后藏着一个需求，它会是什么？安全感、自由、被理解、稳定、认可、边界、休息，还是别的？',
+        '为了照顾这个需求，你现在最不想再勉强自己的地方是什么？'
+      ],
+      choice:[
+        '现在我们再回到选择。\n\n你目前面前有哪些选项？不用完美，先列出 2 到 4 个可能。',
+        '在这些选项里，哪一个不是最完美、但最能让你“喘一口气”？为什么？'
+      ],
+      plan:[
+        '我们不做宏大计划，只做一个不会吓到你的下一步。\n\n今天或明天，你可以做的最小动作是什么？',
+        '如果你做到一半又害怕/拖延了，给自己留一个温柔的备用动作是什么？'
+      ]
+    };
+    function load(){try{Object.assign(state,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){};try{state.history=JSON.parse(localStorage.getItem(HIST)||'[]')}catch(e){}}
+    function save(){localStorage.setItem(KEY,JSON.stringify({screen:state.screen,sessionId:state.sessionId,messages:state.messages,step:state.step,sub:state.sub,data:state.data}));}
+    function saveHist(){const item={id:state.sessionId,title:(state.data.raw||state.data.story0||'一次思维整理').slice(0,28),date:new Date().toISOString(),data:state.data};const i=state.history.findIndex(x=>x.id===item.id);i>=0?state.history[i]=item:state.history.unshift(item);localStorage.setItem(HIST,JSON.stringify(state.history));}
+    function fmt(t){return String(t||'').replace(/[&<>]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[m])).replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>')}
+    function progress(){return Math.max(0,Math.round((layers.indexOf(state.step)/(layers.length-1))*100))}
+    function shell(content){app.innerHTML=`<div class="topbar no-print"><div class="brand"><div class="logo"></div><span>Aporia</span></div><button class="btn small ghost" onclick="home()">回到首页</button></div>${content}`;save()}
+    function landing(){shell(`<section class="hero narrow fade"><div class="kicker">不是逼你理性，而是陪你慢慢看清</div><h1 class="title">把心里的结，<br><em>轻轻拆开。</em></h1><p class="subtitle">这里不会要求你立刻冷静、客观、正确。它会先接住你的情绪，再用有方向的问题，带你找到更适合自己的下一步。</p><div class="hero-actions"><button class="btn primary" onclick="start()">开始整理我的问题</button><button class="btn" onclick="historyView()">看历史小纸条</button></div><div class="features"><div class="feature"><b>先情绪，后分析</b><p>承认感受不是干扰，而是线索。</p></div><div class="feature"><b>有导向的提问</b><p>每次只问一个问题，不把你丢进模型里。</p></div><div class="feature"><b>小步行动</b><p>最后不是宏大计划，而是你真的做得到的一步。</p></div></div></section>`)}
+    function chat(){const active=layers.indexOf(state.step);shell(`<div class="narrow"><div class="no-print"><span class="layer-badge">${names[state.step]||'整理中'}</span><div class="progress"><span style="width:${progress()}%"></span></div><div class="crumbs">${layers.slice(1).map(l=>`<span class="${layers.indexOf(l)<=active?'active':''}">${names[l]}</span>`).join('')}</div></div><div class="chat">${state.messages.map(m=>`<div class="bubble ${m.role==='user'?'user':'ai'}">${fmt(m.content)}</div>`).join('')}${state.loading?'<div class="bubble ai">我在整理你的回答……</div>':''}</div><div class="input-card no-print"><textarea id="input" placeholder="慢慢写，不用完美。" onkeydown="key(event)"></textarea><button class="btn primary" onclick="send()">写好了</button></div></div>`);setTimeout(()=>{$('#input')?.focus();window.scrollTo(0,document.body.scrollHeight)},20)}
+    function ai(t){state.messages.push({role:'assistant',content:t});chat()}
+    function user(t){state.messages.push({role:'user',content:t});chat()}
+    function start(){state.sessionId=Date.now()+'';state.screen='chat';state.step='checkin';state.sub=0;state.data={};state.messages=[];chat();ai(prompts.start)}
+    function nextPrompt(){const arr=prompts[state.step];if(!arr){return report()} ai(arr[state.sub]||arr[arr.length-1])}
+    function send(){if(state.loading)return;const el=$('#input');const text=(el?.value||'').trim();if(!text)return;el.value='';user(text);state.loading=true;chat();setTimeout(()=>{process(text);state.loading=false;chat()},420)}
+    function key(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send()}}
+    function process(text){
+      if(!state.data.raw){state.data.raw=text;state.sub=0;return nextPrompt()}
+      const key=state.step+state.sub; state.data[key]=text;
+      const max=(prompts[state.step]||[]).length;
+      state.sub++;
+      if(state.sub<max) return nextPrompt();
+      advance();
+    }
+    function advance(){
+      const order=['checkin','story','feeling','belief','need','choice','plan'];
+      const i=order.indexOf(state.step);
+      if(i<order.length-1){state.step=order[i+1];state.sub=0;return nextPrompt()}
+      state.step='report';state.screen='report';saveHist();report();
+    }
+    function gentleSummary(){
+      const d=state.data;
+      return {
+        problem:d.raw||'', weight:d.checkin1||'', weather:d.checkin0||'', origin:d.story0||'', scene:d.story1||'',
+        feeling:d.feeling0||'', protection:d.feeling1||'', belief:d.belief0||'', reframe:d.belief1||'', need:d.need0||'', boundary:d.need1||'', options:d.choice0||'', choice:d.choice1||'', first:d.plan0||'', backup:d.plan1||''
+      }
+    }
+    function report(){const s=gentleSummary();shell(`<div class="card narrow fade"><div class="no-print" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px"><button class="btn primary" onclick="window.print()">导出 PDF</button><button class="btn" onclick="copyMd()">复制文字</button><button class="btn" onclick="start()">重新整理</button></div><h2 style="font-size:1.8rem;margin-bottom:4px">给你的最终小纸条</h2><p style="color:var(--coffee-2);margin-bottom:16px">${new Date().toLocaleString()}</p><div class="report-section"><h3>1. 你带来的问题</h3><p>${fmt(s.problem)}</p><p>它现在像：${fmt(s.weather||'某种沉沉的天气')}；重量约为：${fmt(s.weight||'-')}</p></div><div class="report-section"><h3>2. 这件事真正牵动你的地方</h3><p>${fmt(s.feeling||'你还没有完全说清，但它已经值得被认真对待。')}</p><p>它可能在保护你：${fmt(s.protection||'不再被伤害 / 不再失控 / 不再勉强。')}</p></div><div class="report-section"><h3>3. 那句卡住你的想法</h3><p><strong>原本的自动判断：</strong>${fmt(s.belief||'-')}</p><p><strong>更温柔的改写：</strong>${fmt(s.reframe||'-')}</p></div><div class="report-section"><h3>4. 你的真实需求</h3><p>${fmt(s.need||'-')}</p><p>你不必继续勉强自己的地方：${fmt(s.boundary||'-')}</p></div><div class="report-section"><h3>5. 不是最完美，但更能呼吸的选择</h3><p><strong>可选路径：</strong>${fmt(s.options||'-')}</p><p><strong>当前更适合的一步：</strong>${fmt(s.choice||'-')}</p></div><div class="report-section"><h3>6. 最小行动</h3><p><strong>今天/明天：</strong>${fmt(s.first||'-')}</p><p><strong>如果做不到，也可以：</strong>${fmt(s.backup||'-')}</p></div><div class="soft-note"><strong>给你的提醒：</strong><br>理性不是把情绪赶走，而是在情绪旁边点一盏灯。你不需要马上变得坚定，你只需要先做一个不背叛自己的小动作。</div></div>`)}
+    function copyMd(){const s=gentleSummary();const md=`# Aporia 最终小纸条\n\n## 问题\n${s.problem}\n\n## 感受\n${s.feeling}\n\n## 需求\n${s.need}\n\n## 更温柔的想法\n${s.reframe}\n\n## 下一步\n${s.first}\n\n## 备用动作\n${s.backup}`;navigator.clipboard.writeText(md).then(()=>alert('已经复制好了'))}
+    function historyView(){load();shell(`<div class="narrow"><h2 style="margin:18px 0">历史小纸条</h2>${state.history.length?state.history.map(h=>`<div class="card history-item" onclick="openHist('${h.id}')"><b>${fmt(h.title)}</b><p style="color:var(--coffee-2);font-size:.9rem">${new Date(h.date).toLocaleString()}</p></div>`).join(''):'<p>还没有历史记录。</p>'}<button class="btn" onclick="landing()" style="margin-top:12px">返回</button></div>`)}
+    function openHist(id){const h=state.history.find(x=>x.id===id);if(!h)return;state.data=h.data||{};state.step='report';state.screen='report';report()}
+    function home(){state.screen='landing';landing()}
+    window.start=start;window.send=send;window.key=key;window.home=home;window.landing=landing;window.historyView=historyView;window.openHist=openHist;window.copyMd=copyMd;
+    const app=document.getElementById('app');load(); state.screen==='report'?report(): state.screen==='chat'?chat():landing();
+  })();
+  </script>
+</body>
+</html>
